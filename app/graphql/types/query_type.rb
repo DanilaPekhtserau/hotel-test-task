@@ -7,11 +7,24 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    field :requests, [RequestType], null: false do
+      argument :places, Integer, required: false
+      argument :order_by, String, required: false
     end
+
+    def requests(places: nil, order_by: nil)
+      requests = Request.all
+
+      if places.present?
+        requests = requests.where(places: places)
+      end
+
+      if order_by.present?
+        requests = requests.order(order_by)
+      end
+
+      requests
+    end
+
   end
 end
