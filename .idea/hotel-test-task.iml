@@ -47,6 +47,7 @@
     <orderEntry type="library" scope="PROVIDED" name="crass (v1.0.6, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="debug (v1.7.2, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="devise (v4.9.2, rbenv: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="diff-lcs (v1.5.0, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.12.0, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v1.1.0, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="graphql (v2.0.21, rbenv: 3.2.0) [gem]" level="application" />
@@ -78,6 +79,11 @@
     <orderEntry type="library" scope="PROVIDED" name="rake (v13.0.6, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="reline (v0.3.3, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="responders (v3.1.0, rbenv: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec (v3.12.0, rbenv: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec-core (v3.12.2, rbenv: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v3.12.3, rbenv: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.12.5, rbenv: 3.2.0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rspec-support (v3.12.0, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="thor (v1.2.1, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="timeout (v0.3.2, rbenv: 3.2.0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="tzinfo (v2.0.6, rbenv: 3.2.0) [gem]" level="application" />
@@ -107,6 +113,20 @@
         <option value="devise:install" />
         <option value="devise:views" />
         <option value="generator" />
+        <option value="graphql:enum" />
+        <option value="graphql:input" />
+        <option value="graphql:install" />
+        <option value="graphql:install:mutation_root" />
+        <option value="graphql:interface" />
+        <option value="graphql:loader" />
+        <option value="graphql:mutation" />
+        <option value="graphql:mutation_create" />
+        <option value="graphql:mutation_delete" />
+        <option value="graphql:mutation_update" />
+        <option value="graphql:object" />
+        <option value="graphql:relay" />
+        <option value="graphql:scalar" />
+        <option value="graphql:union" />
         <option value="integration_test" />
         <option value="job" />
         <option value="mailbox" />
@@ -152,6 +172,20 @@
         <option value="devise:install" />
         <option value="devise:views" />
         <option value="generator" />
+        <option value="graphql:enum" />
+        <option value="graphql:input" />
+        <option value="graphql:install" />
+        <option value="graphql:install:mutation_root" />
+        <option value="graphql:interface" />
+        <option value="graphql:loader" />
+        <option value="graphql:mutation" />
+        <option value="graphql:mutation_create" />
+        <option value="graphql:mutation_delete" />
+        <option value="graphql:mutation_update" />
+        <option value="graphql:object" />
+        <option value="graphql:relay" />
+        <option value="graphql:scalar" />
+        <option value="graphql:union" />
         <option value="integration_test" />
         <option value="job" />
         <option value="mailbox" />
