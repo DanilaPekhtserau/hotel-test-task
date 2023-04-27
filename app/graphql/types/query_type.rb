@@ -26,5 +26,24 @@ module Types
       requests
     end
 
+    field :bills, [BillType], null: false do
+      argument :client_id, ID, required: false
+      argument :order_by, String, required: false
+    end
+
+    def bills(client_id: nil, order_by: nil)
+      bills = Bill.all
+
+      if client_id.present?
+        bills = bills.where(user_id: client_id)
+      end
+
+      if order_by.present?
+        bills = bills.order(order_by)
+      end
+
+      bills
+    end
+
   end
 end
