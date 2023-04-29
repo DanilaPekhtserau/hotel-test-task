@@ -18,6 +18,8 @@ gem "graphql"
 
 gem "rspec"
 
+gem 'simple_token_authentication', '~> 1.0'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
