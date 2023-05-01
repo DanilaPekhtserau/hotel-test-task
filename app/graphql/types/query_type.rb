@@ -26,8 +26,6 @@ module Types
         end
 
         requests
-      else
-        #TODO add smth
       end
     end
 

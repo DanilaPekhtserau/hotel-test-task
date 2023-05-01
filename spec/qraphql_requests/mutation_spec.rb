@@ -16,13 +16,11 @@ RSpec.describe 'POST /graphql', type: :request do
   context 'bills mutation' do
     let!(:room1) { Room.create(places: 3, room_class: "normal", price: 40) }
     let!(:request1) { Request.create(user: user1, places: 3, room_class: 'lux', time_of_stay: 4) }
-      headers = { 'Authorization' => 'gdhhfdhdfhfhf' }
-      it 'create bill' do
-        query = "mutation{createBill(input:{requestId: #{request1.id}, roomId: #{room1.id}}){bill{userId,roomId,cost}}}"
-        post "/graphql", params: { query: query }, headers: headers
-        expect(response.body).to eq("{\"data\":{\"createBill\":{\"bill\":{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":160}}}}")
-      end
-
-
+    headers = { 'Authorization' => 'gdhhfdhdfhfhf' }
+    it 'create bill' do
+      query = "mutation{createBill(input:{requestId: #{request1.id}, roomId: #{room1.id}}){bill{userId,roomId,cost}}}"
+      post "/graphql", params: { query: query }, headers: headers
+      expect(response.body).to eq("{\"data\":{\"createBill\":{\"bill\":{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":160}}}}")
     end
   end
+end

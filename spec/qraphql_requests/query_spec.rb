@@ -43,7 +43,7 @@ RSpec.describe 'POST /graphql', type: :request do
     context 'admin access' do
       headers = { 'Authorization' => 'gdhhfdhdfhfhf' }
       it 'return all bills' do
-        query = "{bills{ userId, roomId, cost}}"
+        query = "{bills{ userId, roomIda, cost}}"
         post "/graphql", params: { query: query }, headers: headers
         expect(response.body).to eq("{\"data\":{\"bills\":[{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":140},{\"userId\":#{user2.id},\"roomId\":#{room1.id},\"cost\":50},{\"userId\":#{user1.id},\"roomId\":#{room2.id},\"cost\":164}]}}")
       end
