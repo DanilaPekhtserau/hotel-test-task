@@ -4,21 +4,18 @@ class Mutations::CreateRequest < Mutations::BaseMutation
   argument :time_of_stay, Integer, required: true
 
   field :request, Types::RequestType, null: false
-  field :errors, [String], null: false
 
   def resolve(places:, room_class:, time_of_stay:)
     user = context[:current_user]
-    request = Request.new(user: user, places: places, room_class: room_class, time_of_stay: time_of_stay)
-    if request.save
-      {
-        request: request,
-        errors: []
-      }
+    if !user.nil? and User.exists?(user.id)
+      request = Request.new(user: user, places: places, room_class: room_class, time_of_stay: time_of_stay)
+      if request.save
+        {
+          request: request
+        }
+      end
     else
-      {
-        request: nil,
-        errors: request.errors.full_messages
-      }
+      raise GraphQL::ExecutionError, "User does not exist"
     end
   end
 end

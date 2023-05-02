@@ -3,23 +3,22 @@ class Mutations::CreateBill < Mutations::BaseMutation
   argument :request_id, ID, required: true
 
   field :bill, Types::BillType, null: false
-  field :errors, [String], null: false
 
   def resolve(room_id:, request_id:)
     user = context[:current_user]
-    if user.admin
-      bill = Bill.new(user: Request.find(request_id).user, room: Room.find(room_id), cost: Bill.get_cost(room_id, request_id))
-      if bill.save
-        {
-          bill: bill,
-          errors: []
-        }
+    if !user.nil? and User.exists?(user.id)
+      if user.admin
+        bill = Bill.new(user: Request.find(request_id).user, room: Room.find(room_id), cost: Bill.get_cost(room_id, request_id))
+        if bill.save
+          {
+            bill: bill
+          }
+        end
       else
-        {
-          bill: nil,
-          errors: bill.errors.full_messages
-        }
+        raise GraphQL::ExecutionError, "No access"
       end
+    else
+      raise GraphQL::ExecutionError, "User does not exist"
     end
   end
 end

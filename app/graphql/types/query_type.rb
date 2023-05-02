@@ -14,18 +14,22 @@ module Types
 
     def requests(places: nil, order_by: nil)
       user = context[:current_user]
-      if user.admin
-        requests = Request.all
+      if !user.nil? and User.exists?(user.id)
+        if user.admin
+          requests = Request.all
+          if places.present?
+            requests = requests.where(places: places)
+          end
+          if order_by.present?
+            requests = requests.order(order_by)
+          end
 
-        if places.present?
-          requests = requests.where(places: places)
+          requests
+        else
+          raise GraphQL::ExecutionError, "No access"
         end
-
-        if order_by.present?
-          requests = requests.order(order_by)
-        end
-
-        requests
+      else
+        raise GraphQL::ExecutionError, "User does not exist"
       end
     end
 
@@ -37,17 +41,22 @@ module Types
     def bills(client_id: nil, order_by: nil)
       user = context[:current_user]
       bills = Bill.all
-      if user.admin
-        if client_id.present?
-          bills = bills.where(user_id: client_id)
+      if !user.nil? and User.exists?(user.id)
+        if user.admin
+          if client_id.present?
+            bills = bills.where(user_id: client_id)
+          end
+        else
+          bills = bills.where(user_id: user.id)
         end
+        if order_by.present?
+          bills = bills.order(order_by)
+        end
+
+        bills
       else
-        bills = bills.where(user_id: user.id)
+        raise GraphQL::ExecutionError, "User does not exist"
       end
-      if order_by.present?
-        bills = bills.order(order_by)
-      end
-      bills
     end
   end
 end
