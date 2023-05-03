@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Types
   class QueryType < Types::BaseObject
     # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
@@ -14,7 +16,7 @@ module Types
 
     def requests(places: nil, order_by: nil)
       user = context[:current_user]
-      raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? and User.exists?(user.id)
+      raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? && User.exists?(user.id)
       raise GraphQL::ExecutionError, 'No access' unless user.admin
 
       requests = Request.all
@@ -32,7 +34,7 @@ module Types
     def bills(client_id: nil, order_by: nil)
       user = context[:current_user]
       bills = Bill.all
-      raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? and User.exists?(user.id)
+      raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? && User.exists?(user.id)
 
       if user.admin
         bills = bills.where(user_id: client_id) if client_id.present?

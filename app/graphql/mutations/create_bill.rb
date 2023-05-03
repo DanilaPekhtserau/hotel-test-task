@@ -1,20 +1,24 @@
-class Mutations::CreateBill < Mutations::BaseMutation
-  argument :room_id, ID, required: true
-  argument :request_id, ID, required: true
+# frozen_string_literal: true
 
-  field :bill, Types::BillType, null: false
+module Mutations
+  class CreateBill < Mutations::BaseMutation
+    argument :room_id, ID, required: true
+    argument :request_id, ID, required: true
 
-  def resolve(room_id:, request_id:)
-    user = context[:current_user]
-    raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? and User.exists?(user.id)
-    raise GraphQL::ExecutionError, 'No access' unless user.admin
+    field :bill, Types::BillType, null: false
 
-    bill = Bill.new(user: Request.find(request_id).user, room: Room.find(room_id),
-                    cost: Bill.get_cost(room_id, request_id))
-    return unless bill.save
+    def resolve(room_id:, request_id:)
+      user = context[:current_user]
+      raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? && User.exists?(user.id)
+      raise GraphQL::ExecutionError, 'No access' unless user.admin
 
-    {
-      bill:
-    }
+      bill = Bill.new(user: Request.find(request_id).user, room: Room.find(room_id),
+                      cost: Bill.get_cost(room_id, request_id))
+      return unless bill.save
+
+      {
+        bill:
+      }
+    end
   end
 end
