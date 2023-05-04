@@ -17,9 +17,8 @@ module Types
     def requests(places: nil, order_by: nil)
       user = context[:current_user]
       raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? && User.exists?(user.id)
-      raise GraphQL::ExecutionError, 'No access' unless user.admin
 
-      requests = Request.all
+      requests = Pundit.policy_scope(user, Request)
       requests = requests.where(places:) if places.present?
       requests = requests.order(order_by) if order_by.present?
 
@@ -33,14 +32,10 @@ module Types
 
     def bills(client_id: nil, order_by: nil)
       user = context[:current_user]
-      bills = Bill.all
       raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? && User.exists?(user.id)
 
-      if user.admin
-        bills = bills.where(user_id: client_id) if client_id.present?
-      else
-        bills = bills.where(user_id: user.id)
-      end
+      bills = Pundit.policy_scope(user, Bill)
+      bills = bills.where(user_id: client_id) if client_id.present?
       bills = bills.order(order_by) if order_by.present?
 
       bills

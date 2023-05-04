@@ -21,8 +21,7 @@ RSpec.describe 'bills mutation', type: :request do
     headers = { 'Authorization' => 'huninhwewcce' }
     it 'return No access' do
       query = "mutation{createBill(input:{requestId: #{request1.id}, roomId: #{room1.id}}){bill{userId,roomId,cost}}}"
-      post('/graphql', params: { query: }, headers:)
-      expect(response.body).to include('No access')
+      expect { post('/graphql', params: { query: }, headers:) }.to raise_error(Pundit::NotAuthorizedError)
     end
   end
   context 'no authorization' do

@@ -32,8 +32,7 @@ RSpec.describe 'requests query', type: :request do
     headers = { 'Authorization' => 'vsfgvsgsvdgdv' }
     it 'return No access' do
       query = '{requests{ userId,places,roomClass,timeOfStay}}'
-      post('/graphql', params: { query: }, headers:)
-      expect(response.body).to include('No access')
+      expect { post('/graphql', params: { query: }, headers:) }.to raise_error(Pundit::NotAuthorizedError)
     end
   end
   context 'no authorization' do

@@ -18,6 +18,8 @@ gem 'devise'
 
 gem 'graphql'
 
+gem 'pundit'
+
 gem 'simple_token_authentication', '~> 1.0'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
@@ -47,6 +49,7 @@ gem 'bootsnap', require: false
 group :development, :test do
   gem 'rspec-rails', '~> 6.0.0'
   gem 'rubocop'
+  gem 'simplecov'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
 end
