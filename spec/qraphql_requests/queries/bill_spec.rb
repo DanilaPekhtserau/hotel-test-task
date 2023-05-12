@@ -18,7 +18,8 @@ RSpec.describe 'bills query', type: :request do
     it 'return user\'s bills' do
       query = '{bills{ userId, roomId, cost}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"bills\":[{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":140},{\"userId\":#{user1.id},\"roomId\":#{room2.id},\"cost\":164}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'bills' => [{ 'cost' => 140, 'roomId' => room1.id, 'userId' => user1.id },
+                                                                        { 'cost' => 164, 'roomId' => room2.id, 'userId' => user1.id }] } })
     end
   end
   context 'admin authorization' do
@@ -26,17 +27,29 @@ RSpec.describe 'bills query', type: :request do
     it 'return all bills' do
       query = '{bills{ userId, roomId, cost}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"bills\":[{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":140},{\"userId\":#{user2.id},\"roomId\":#{room1.id},\"cost\":50},{\"userId\":#{user1.id},\"roomId\":#{room2.id},\"cost\":164}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'bills' => [{ 'cost' => 140, 'roomId' => room1.id, 'userId' => user1.id },
+                                                                        { 'cost' => 50, 'roomId' => room1.id, 'userId' => user2.id },
+                                                                        { 'cost' => 164, 'roomId' => room2.id, 'userId' => user1.id }] } })
     end
     it 'return filtered bills' do
       query = "{bills(clientId: #{user1.id}){ userId, roomId, cost}}"
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"bills\":[{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":140},{\"userId\":#{user1.id},\"roomId\":#{room2.id},\"cost\":164}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'bills' => [{ 'cost' => 140, 'roomId' => room1.id, 'userId' => user1.id },
+                                                                        { 'cost' => 164, 'roomId' => room2.id, 'userId' => user1.id }] } })
     end
-    it 'return sorted requests' do
+    it 'return sorted requests ASC' do
       query = '{bills(orderBy: "cost"){ userId, roomId, cost}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"bills\":[{\"userId\":#{user2.id},\"roomId\":#{room1.id},\"cost\":50},{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":140},{\"userId\":#{user1.id},\"roomId\":#{room2.id},\"cost\":164}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'bills' => [{ 'cost' => 50, 'roomId' => room1.id, 'userId' => user2.id },
+                                                                        { 'cost' => 140, 'roomId' => room1.id, 'userId' => user1.id },
+                                                                        { 'cost' => 164, 'roomId' => room2.id, 'userId' => user1.id }] } })
+    end
+    it 'return sorted requests DESC' do
+      query = '{bills(orderBy: "cost", sortingDirection: "DESC"){ userId, roomId, cost}}'
+      post('/graphql', params: { query: }, headers:)
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'bills' => [{ 'cost' => 164, 'roomId' => room2.id, 'userId' => user1.id },
+                                                                        { 'cost' => 140, 'roomId' => room1.id, 'userId' => user1.id },
+                                                                        { 'cost' => 50, 'roomId' => room1.id, 'userId' => user2.id }] } })
     end
   end
   context 'no authorization' do

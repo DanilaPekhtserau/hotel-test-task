@@ -13,7 +13,7 @@ RSpec.describe 'requests mutation', type: :request do
       headers = { 'Authorization' => 'huninhwewcce' }
       query = 'mutation{createRequest(input:{places: 1,roomClass: "lux",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"createRequest\":{\"request\":{\"userId\":#{user1.id},\"places\":1,\"roomClass\":\"lux\",\"timeOfStay\":2}}}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createRequest' => { 'request' => { 'places' => 1, 'roomClass' => 'lux', 'timeOfStay' => 2, 'userId' => user1.id } } } })
     end
   end
   context 'admin authorization' do
@@ -21,7 +21,7 @@ RSpec.describe 'requests mutation', type: :request do
       headers = { 'Authorization' => 'gdhhfdhdfhfhf' }
       query = 'mutation{createRequest(input:{places: 1,roomClass: "lux",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"createRequest\":{\"request\":{\"userId\":#{user2.id},\"places\":1,\"roomClass\":\"lux\",\"timeOfStay\":2}}}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createRequest' => { 'request' => { 'places' => 1, 'roomClass' => 'lux', 'timeOfStay' => 2, 'userId' => user2.id } } } })
     end
   end
   context 'no authorization' do

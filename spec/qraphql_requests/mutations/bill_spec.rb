@@ -14,7 +14,7 @@ RSpec.describe 'bills mutation', type: :request do
     it 'create bill' do
       query = "mutation{createBill(input:{requestId: #{request1.id}, roomId: #{room1.id}}){bill{userId,roomId,cost}}}"
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"createBill\":{\"bill\":{\"userId\":#{user1.id},\"roomId\":#{room1.id},\"cost\":160}}}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createBill' => { 'bill' => { 'cost' => 160, 'roomId' => room1.id, 'userId' => user1.id } } } })
     end
   end
   context 'user authorization' do

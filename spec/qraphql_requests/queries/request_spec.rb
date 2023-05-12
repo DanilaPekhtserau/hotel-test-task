@@ -15,17 +15,25 @@ RSpec.describe 'requests query', type: :request do
     it 'return all requests' do
       query = '{requests{ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"requests\":[{\"userId\":#{user1.id},\"places\":3,\"roomClass\":\"lux\",\"timeOfStay\":4},{\"userId\":#{user2.id},\"places\":2,\"roomClass\":\"normal\",\"timeOfStay\":2}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 3, 'roomClass' => 'lux', 'timeOfStay' => 4, 'userId' => user1.id },
+                                                                           { 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id }] } })
     end
     it 'return filtered requests' do
       query = '{requests(places: 2){ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"requests\":[{\"userId\":#{user2.id},\"places\":2,\"roomClass\":\"normal\",\"timeOfStay\":2}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id }] } })
     end
-    it 'return sorted requests' do
+    it 'return sorted requests ASC' do
       query = '{requests(orderBy: "places"){ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(response.body).to eq("{\"data\":{\"requests\":[{\"userId\":#{user2.id},\"places\":2,\"roomClass\":\"normal\",\"timeOfStay\":2},{\"userId\":#{user1.id},\"places\":3,\"roomClass\":\"lux\",\"timeOfStay\":4}]}}")
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id },
+                                                                           { 'places' => 3, 'roomClass' => 'lux', 'timeOfStay' => 4, 'userId' => user1.id }] } })
+    end
+    it 'return sorted requests DESC' do
+      query = '{requests(orderBy: "places", sortingDirection: "DESC"){ userId,places,roomClass,timeOfStay}}'
+      post('/graphql', params: { query: }, headers:)
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 3, 'roomClass' => 'lux', 'timeOfStay' => 4, 'userId' => user1.id },
+                                                                           { 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id }] } })
     end
   end
   context 'user authorization' do
