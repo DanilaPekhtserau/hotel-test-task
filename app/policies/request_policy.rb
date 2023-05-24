@@ -8,7 +8,7 @@ class RequestPolicy
     end
 
     def resolve
-      raise Pundit::NotAuthorizedError, 'Not authorizet to get request scope' unless @user.admin?
+      raise Pundit::NotAuthorizedError, 'Not authorised to get request scope' unless @user.admin?
 
       scope.all
     end

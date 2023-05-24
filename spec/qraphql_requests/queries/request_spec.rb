@@ -8,32 +8,36 @@ RSpec.describe 'requests query', type: :request do
   let!(:user3) do
     User.create(email: 'test3@gmail.com', password: '5646546', authentication_token: 'gdhhfdhdfhfhf', admin: true)
   end
-  let!(:request1) { Request.create(user: user1, places: 3, room_class: 'lux', time_of_stay: 4) }
-  let!(:request2) { Request.create(user: user2, places: 2, room_class: 'normal', time_of_stay: 2) }
+  let!(:request1) { Request.create(user: user1, places: 3, room_class: 'deluxe', time_of_stay: 4) }
+  let!(:request2) { Request.create(user: user2, places: 2, room_class: 'standart', time_of_stay: 2) }
   context 'admin authorization' do
     headers = { 'Authorization' => 'gdhhfdhdfhfhf' }
     it 'return all requests' do
       query = '{requests{ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 3, 'roomClass' => 'lux', 'timeOfStay' => 4, 'userId' => user1.id },
-                                                                           { 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id }] } })
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 3, 'roomClass' => 'deluxe', 'timeOfStay' => 4, 'userId' => user1.id },
+                                                                           { 'places' => 2, 'roomClass' => 'standart',
+                                                                             'timeOfStay' => 2, 'userId' => user2.id }] } })
     end
     it 'return filtered requests' do
       query = '{requests(places: 2){ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id }] } })
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 2, 'roomClass' => 'standart',
+                                                                             'timeOfStay' => 2, 'userId' => user2.id }] } })
     end
     it 'return sorted requests ASC' do
       query = '{requests(orderBy: "places"){ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id },
-                                                                           { 'places' => 3, 'roomClass' => 'lux', 'timeOfStay' => 4, 'userId' => user1.id }] } })
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 2, 'roomClass' => 'standart', 'timeOfStay' => 2, 'userId' => user2.id },
+                                                                           { 'places' => 3, 'roomClass' => 'deluxe',
+                                                                             'timeOfStay' => 4, 'userId' => user1.id }] } })
     end
     it 'return sorted requests DESC' do
       query = '{requests(orderBy: "places", sortingDirection: "DESC"){ userId,places,roomClass,timeOfStay}}'
       post('/graphql', params: { query: }, headers:)
-      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 3, 'roomClass' => 'lux', 'timeOfStay' => 4, 'userId' => user1.id },
-                                                                           { 'places' => 2, 'roomClass' => 'normal', 'timeOfStay' => 2, 'userId' => user2.id }] } })
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'requests' => [{ 'places' => 3, 'roomClass' => 'deluxe', 'timeOfStay' => 4, 'userId' => user1.id },
+                                                                           { 'places' => 2, 'roomClass' => 'standart',
+                                                                             'timeOfStay' => 2, 'userId' => user2.id }] } })
     end
   end
   context 'user authorization' do

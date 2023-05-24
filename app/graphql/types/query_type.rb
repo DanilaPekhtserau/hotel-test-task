@@ -2,10 +2,6 @@
 
 module Types
   class QueryType < Types::BaseObject
-    # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
-    include GraphQL::Types::Relay::HasNodeField
-    include GraphQL::Types::Relay::HasNodesField
-
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
@@ -41,6 +37,15 @@ module Types
       bills = bills.order(order_by + " #{sorting_direction}") if order_by.present?
 
       bills
+    end
+
+    field :users, [UserType], null: true
+
+    def users
+      user = context[:current_user]
+      raise GraphQL::ExecutionError, 'User does not exist' unless !user.nil? && User.exists?(user.id)
+
+      Pundit.policy_scope(user, User)
     end
   end
 end

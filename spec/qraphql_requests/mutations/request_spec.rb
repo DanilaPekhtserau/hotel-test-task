@@ -11,23 +11,25 @@ RSpec.describe 'requests mutation', type: :request do
   context 'user authorization' do
     it 'create request' do
       headers = { 'Authorization' => 'huninhwewcce' }
-      query = 'mutation{createRequest(input:{places: 1,roomClass: "lux",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
+      query = 'mutation{createRequest(input:{places: 1,roomClass: "deluxe",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
       post('/graphql', params: { query: }, headers:)
-      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createRequest' => { 'request' => { 'places' => 1, 'roomClass' => 'lux', 'timeOfStay' => 2, 'userId' => user1.id } } } })
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createRequest' => { 'request' => { 'places' => 1,
+                                                                                                'roomClass' => 'deluxe', 'timeOfStay' => 2, 'userId' => user1.id } } } })
     end
   end
   context 'admin authorization' do
     it 'create request' do
       headers = { 'Authorization' => 'gdhhfdhdfhfhf' }
-      query = 'mutation{createRequest(input:{places: 1,roomClass: "lux",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
+      query = 'mutation{createRequest(input:{places: 1,roomClass: "deluxe",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
       post('/graphql', params: { query: }, headers:)
-      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createRequest' => { 'request' => { 'places' => 1, 'roomClass' => 'lux', 'timeOfStay' => 2, 'userId' => user2.id } } } })
+      expect(JSON.parse(response.body)).to eq({ 'data' => { 'createRequest' => { 'request' => { 'places' => 1,
+                                                                                                'roomClass' => 'deluxe', 'timeOfStay' => 2, 'userId' => user2.id } } } })
     end
   end
   context 'no authorization' do
     it 'return User does not exist' do
       headers = { 'Authorization' => '' }
-      query = 'mutation{createRequest(input:{places: 1,roomClass: "lux",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
+      query = 'mutation{createRequest(input:{places: 1,roomClass: "deluxe",timeOfStay: 2}){request{userId,places,roomClass,timeOfStay}}}'
       post('/graphql', params: { query: }, headers:)
       expect(response.body).to include('User does not exist')
     end
